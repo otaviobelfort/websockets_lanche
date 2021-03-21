@@ -59,8 +59,15 @@ server.on("connection", (socket) => {
     /* quando o servidor receber uma mensagem do cliente, executa */
     socket.on("message", (message) => {
         if(message === 'cardapio'){
-            for(i = 0; i <= bd_massa.length;i++){
+            socket.send("\n\n---- Massas ----");
+            for(i = 0; i < bd_massa.length;i++){
                 socket.send(bd_massa[i].nome + " R$ " + bd_massa[i].preco + ",00");
+                
+            }
+            socket.send("\n\n---- Bebibas ----");
+            for(j = 0; j < bd_bebida.length;j++){
+                socket.send(bd_bebida[j].nome + " R$ " + bd_bebida[j].preco + ",00");
+                
             }
             
         }
