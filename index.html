@@ -7,15 +7,17 @@
     <title>WebSockets - Lanches Distribuídos</title>
 </head>
 <body>
-    Enviar:
-    <input id="caixadetexto" type="text">
-    <input id="botao" type="button" onclick="meuClick()">
-    <h1>Mensagem recebida</h1>
+    
+    
+    <h1>WebSockets - Lanches Distribuídos</h1>
     <div id="texto"></div>
+    <button onclick="bt_cardap_Click()">Cardápio</button>
+    <button onclick="bt_pedido_Click()">Fazer Pedido</button> 
+
 
 </body>
 <script>
-    var HOST = location.origin.replace(/^http/, 'ws');
+    var HOST = ("ws://127.0.0.1:8080");
     const socket = new WebSocket(HOST);
 
     socket.onopen = () => {
@@ -30,10 +32,53 @@
         myDiv.appendChild(textNode);
     }
 
-    const btClick = () => {
+    const bt_cardap_Click = () => {
         var label_text = document.querySelector("#caixadetexto");
 
-        socket.send(label_text.value);
+        socket.send("cardapio");
+    }
+
+    const bt_pedido_Click = () =>{
+        var data = {
+        celulas: ['Fazer Pedido'],
+        idLinhas: ['Pastel', 'Bolo', 'Torta','Churros','Quibe','Bomba']
+        }
+
+        var table = document.createElement('table');
+
+        // cabeçalho da table
+        var tr = document.createElement('tr');
+        var th = document.createElement('th');
+        tr.appendChild(th); // vazia
+        data.celulas.forEach(function (celula) {
+            var th = document.createElement('th');
+            th.innerHTML = celula;
+            tr.appendChild(th);
+        });
+        table.appendChild(tr);
+
+        // corpo
+        data.idLinhas.forEach(function (id) {
+            // criar nova linha
+            var tr = document.createElement('tr');
+            tr.dataset.id = id;
+            // primeira célula com nome da linha
+            var td = document.createElement('td');
+            td.innerHTML = id;
+            tr.appendChild(td);
+            // percorrer array de TDs
+            data.celulas.forEach(function (celula) {
+                var td = document.createElement('td');
+                var input = document.createElement('input');
+                input.type = 'checkbox';
+                input.name = celula + []; // * - Nota a)
+                td.appendChild(input);
+                tr.appendChild(td);
+            });
+            table.appendChild(tr);
+        });
+        // adicionar tabela ao documento
+        document.body.appendChild(table);
     }
 
 </script>

@@ -1,33 +1,75 @@
-
-/* realiza o deploy e execução no Heroku */
-const PORT = process.env.PORT || 8080;
-const INDEX = '/index.html';
-/* */
-/* importa a biblioteca */
+// /* importa a biblioteca */
 const WebSocket = require("ws");
-const express = require("express");
 
-const server = express()
-  .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
-  .listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}!`));
+// /* cria o objeto do servidor WebSocket */
+const server = new WebSocket.Server({ port: 8080 });
 
-/* cria o objeto do servidor WebSocket */
-const wss = new WebSocket.Server({ server });
+// dados do cardapio
+const bd_massa = [
+    {
+        nome: "Mini Pizza Calabreza",
+        preco: 5.0,
+    },
+    {
+        nome: 'Pastel Carne Seca',
+        preco: 6.0,
+    },
+    {
+        nome: "Pastel Queijo",
+        preco: 5.0,
+    },
+    {
+        nome: "Churrus",
+        preco: 3.0,
+    },
+    {
+        nome: "Bomba",
+        preco: 7.0,
+    },
+    {
+        nome: "Torta de chocolate",
+        preco: 10.0,
+    },
+    
+];
+const bd_bebida = [
+    {
+        nome: "Refrigerante Guaraná Jesus - 2L",
+        preco: 8.0,
+    },
+    {
+        nome: 'Refrigerante Coca Cola',
+        preco: 10.0,
+    },
+    {
+        nome: "Suco de Abacaxi",
+        preco: 10.0,
+    },
+    {
+        nome: "Suco de Cupu",
+        preco: 10.0,
+    },
+];
 
 /* quando um cliente se conectar no servidor, executa: */
-wss.on("connection", (socket) => {
+server.on("connection", (socket) => {
     
     console.log("Cliente conectado!");
     
     /* quando o servidor receber uma mensagem do cliente, executa */
     socket.on("message", (message) => {
+        if(message === 'cardapio'){
+            for(i = 0; i <= bd_massa.length;i++){
+                socket.send(bd_massa[i].nome + " R$ " + bd_massa[i].preco + ",00");
+            }
+            
+        }
         
-        console.log("Mensagem recebida: " + message);
+    //socket.send("Obrigado por enviar a Mensagem : " + message);
 
         /* envia a mensagem para todos os clientes conectados */
-        wss.clients.forEach((client) => {
-            client.send(message);
-        });
+        
     });
 });
+console.log("Servidor Rodando ...")
 
