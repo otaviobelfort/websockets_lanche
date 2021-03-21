@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSockets - Lanches Distribuídos</title>
+</head>
+<body>
+    Enviar:
+    <input id="caixadetexto" type="text">
+    <input id="botao" type="button" onclick="meuClick()">
+    <h1>Mensagem recebida</h1>
+    <div id="texto"></div>
+
+</body>
+<script>
+    var HOST = location.origin.replace(/^http/, 'ws');
+    const socket = new WebSocket(HOST);
+
+    socket.onopen = () => {
+        socket.send("Bom Lanche!");
+    }
+
+    socket.onmessage = (message) => {
+        var myDiv = document.querySelector("#texto");
+
+        var textNode = document.createElement("div")
+        textNode.innerHTML = `${message.data}`;
+        myDiv.appendChild(textNode);
+    }
+
+    const btClick = () => {
+        var label_text = document.querySelector("#caixadetexto");
+
+        socket.send(label_text.value);
+    }
+
+</script>
+</html>
