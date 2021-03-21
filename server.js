@@ -72,7 +72,7 @@ server.on("connection", (socket) => {
             
         }
         
-    //socket.send("Obrigado por enviar a Mensagem : " + message);
+    socket.send("Obrigado por enviar a Mensagem : " + message);
 
         /* envia a mensagem para todos os clientes conectados */
         

@@ -62,7 +62,9 @@
             // primeira célula com nome da linha
             var td = document.createElement('td');
             td.innerHTML = id;
+                        
             tr.appendChild(td);
+            //socket.send();
             // percorrer array de TDs
             data.celulas.forEach(function (celula) {
                 var td = document.createElement('td');
@@ -73,6 +75,49 @@
                 tr.appendChild(td);
             });
             table.appendChild(tr);
+            
+        });
+        // adicionar tabela ao documento
+        document.body.appendChild(table);
+
+    }
+
+    const bt_enviar_Click = () =>{
+        var data = {
+        celulas: ['Fazer Pedido'],
+        idLinhas: ['Pastel', 'Bolo', 'Torta','Churros','Quibe','Bomba']
+        }
+
+        
+        data.celulas.forEach(function (celula) {
+            var th = document.getElementById('th');
+            th.innerHTML = celula;
+            
+        });
+        
+
+        // corpo
+        data.idLinhas.forEach(function (id) {
+            // criar nova linha
+            
+            dataset.id = id;
+            // primeira célula com nome da linha
+           
+            //socket.send();
+            // percorrer array de TDs
+            data.celulas.forEach(function (celula) {
+                var td = document.getElementById('td');
+                var input = document.getElementById('input');
+                input.type = 'checkbox';
+                input.name = celula + []; // * - Nota a)
+               
+            });
+
+            if(document.getElementById(dataset.idLinhas)){
+                socket.send("true")
+            }
+
+            
         });
         // adicionar tabela ao documento
         document.body.appendChild(table);
